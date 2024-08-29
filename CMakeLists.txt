@@ -1,3 +1,5 @@
+project (LinAlgebra)
+
 set(LinAlgebra_Sources
     Linalg.h
     LUDecomp.cpp
