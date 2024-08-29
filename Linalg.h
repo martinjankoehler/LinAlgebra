@@ -34,7 +34,9 @@
 #ifdef MS_VS
 #include <crtdbg.h>
 #else
+#ifdef _DEBUG
 #  include <wx/debug.h>
+#endif
 #  define _ASSERT wxASSERT
 #endif
 
