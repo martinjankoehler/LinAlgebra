@@ -397,14 +397,13 @@ inline CLin_Vector operator*(const double b, CLin_Vector A)
     return A;
 }
 
-inline CLin_Vector operator/(const CLin_Vector &A, const double &B)
+inline CLin_Vector operator/(const CLin_Vector &A, const double b)
 {
-    CLin_Vector tmp(A);
-    CLin_subscript i;
-	CLin_subscript N = A.dim();
+    CLin_subscript N = A.dim();
 
-    for (i=0; i<N; i++)
-		tmp[i] = A[i] / B;
+    CLin_Vector tmp(A);
+    
+    cblas_dscal(N, 1.0 / b, tmp.array(), 1);
 
     return tmp;
 }
