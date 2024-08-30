@@ -368,23 +368,26 @@ inline CLin_Vector matmult(const CLin_Matrix  &A, const CLin_Vector &x)
 #endif
 
 	CLin_subscript M, N;
-	CLin_subscript i, j;
 
 	M = A.num_rows();
 	N = A.num_cols();
 
 	CLin_Vector tmp(M);
-	double sum;
-
-	for (i=0; i<M; i++)
-	{
-		sum = 0;
-		const double* rowi = A[i];
-		for (j=0; j<N; j++)
-			sum = sum +  rowi[j] * x[j];
-
-		tmp[i] = sum;
-	}
+    
+    // Y <- alpha*A*X + beta*Y
+    cblas_dgemv(CblasRowMajor,
+                CblasNoTrans,
+                M,
+                N,
+                1.0, // Scaling factor for the product of matrix A and vector X
+                A.array(),
+                M,
+                x.array(),
+                1,
+                0.0, // Scaling factor for vector Y
+                tmp.array(),
+                1
+                );
 
 	return tmp;
 }
@@ -397,24 +400,28 @@ inline CLin_Matrix matmult(const CLin_Matrix &A, const CLin_Matrix &B)
 #endif
 
 	CLin_subscript M, N, K;
-	CLin_subscript i, j, k;
-	double sum;
 
 	M = A.num_rows();
-	N = A.num_cols();
-	K = B.num_cols();
+    N = B.num_cols();
+	K = A.num_cols();
 
-	CLin_Matrix tmp(M,K);
+	CLin_Matrix tmp(M, N);
 
-	for (i=0; i<M; i++)
-		for (k=0; k<K; k++)
-		{
-			sum = 0;
-			for (j=0; j<N; j++)
-				sum = sum +  A[i][j] * B[j][k];
-
-			tmp[i][k] = sum;
-		}
+    // C <- alpha*A*B + beta*C
+    cblas_dgemm(CblasRowMajor,
+                CblasNoTrans,
+                CblasNoTrans,
+                M,
+                N,
+                K,
+                1.0,      // ALPHA, scaling factor for the product of matrices A and B.
+                A.array(),
+                M,
+                B.array(),
+                N,
+                0.0,      // BETA, Scaling factor for matrix C
+                tmp.array(),
+                M);
 
 	return tmp;
 }
@@ -422,33 +429,30 @@ inline CLin_Matrix matmult(const CLin_Matrix &A, const CLin_Matrix &B)
 inline int matmult(CLin_Matrix &C, const CLin_Matrix &A, const CLin_Matrix &B)
 {
 	CLin_subscript M, N, K;
-	CLin_subscript i, j, k;
-	double sum;
-	const double* row_i;
-	const double* col_k;
 
 	CLin_assert(A.num_cols() == B.num_rows());
 
 	M = A.num_rows();
-	N = A.num_cols();
-	K = B.num_cols();
+    N = B.num_cols();
+	K = A.num_cols();
 
-	C.newsize(M,K);
+	C.newsize(M, N);
 
-	for (i=0; i<M; i++)
-		for (k=0; k<K; k++)
-		{
-			row_i  = &(A[i][0]);
-			col_k  = &(B[0][k]);
-			sum = 0;
-			for (j=0; j<N; j++)
-			{
-				sum  += *row_i * *col_k;
-				row_i++;
-				col_k += K;
-			}
-			C[i][k] = sum;
-		}
+    // C <- alpha*A*B + beta*C
+    cblas_dgemm(CblasRowMajor,
+                CblasNoTrans,
+                CblasNoTrans,
+                M,
+                N,
+                K,
+                1.0,      // ALPHA, scaling factor for the product of matrices A and B.
+                A.array(),
+                M,
+                B.array(),
+                N,
+                0.0,      // BETA, Scaling factor for matrix C
+                C.array(),
+                M);
 
 	return 0;
 }
