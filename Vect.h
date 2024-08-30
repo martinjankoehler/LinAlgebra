@@ -181,6 +181,7 @@ public:
     inline CLin_subscript dim() const { return  m_iN; }
     inline CLin_subscript size() const { return  m_iN; }
     inline double* array() { return m_dV; }
+    inline const double* array() const { return m_dV; }
 
 	//
 	// methods
