@@ -467,27 +467,31 @@ inline CLin_Matrix operator*(const CLin_Matrix &A, const CLin_Matrix &B)
 	return matmult(A,B);
 }
 
+extern "C" {
+    double dlange_(const char * _Nonnull norm,
+                   const __LAPACK_int * _Nonnull m,
+                   const __LAPACK_int * _Nonnull n,
+                   const double * _Nullable a,
+                   const __LAPACK_int * _Nonnull lda,
+                   double * _Nullable work);
+}
+
 // Frobenius norm
 inline double FNorm(const CLin_Matrix &A)
 {
-	CLin_subscript M, N;
-	CLin_subscript i, j;
-	const double* rowi;
 	double norm;
 
-	M = A.num_rows();
-	N = A.num_cols();
+	long M = A.num_rows();
+    long N = A.num_cols();
 
-	norm = 0;
-	for (i=0; i<M; i++) {
-		rowi = A[i];
-		for (j=0; j<N; j++) {
-			norm += rowi[j]*rowi[j];
-		}
-	}
-
-	norm = sqrt(norm);
-
+    norm = dlange_(
+        "f",  // norm type
+        &M,
+        &N,
+        A.array(),
+        &M,
+        NULL
+    );
 	return norm;
 }
 
