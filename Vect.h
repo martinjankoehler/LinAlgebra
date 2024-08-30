@@ -382,10 +382,8 @@ inline CLin_Vector operator*(const CLin_Vector &A, const CLin_Vector &B)
 inline CLin_Vector operator*(CLin_Vector A, const double b)
 {
     CLin_subscript N = A.dim();
-    CLin_subscript i;
 
-    for (i=0; i<N; i++)
-		A[i] *= b;
+    cblas_dscal(N, b, A.array(), 1);
 
     return A;
 }
@@ -393,10 +391,8 @@ inline CLin_Vector operator*(CLin_Vector A, const double b)
 inline CLin_Vector operator*(const double b, CLin_Vector A)
 {
     CLin_subscript N = A.dim();
-    CLin_subscript i;
 
-    for (i=0; i<N; i++)
-		A[i] *= b;
+    cblas_dscal(N, b, A.array(), 1);
 
     return A;
 }
