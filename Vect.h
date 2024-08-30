@@ -418,13 +418,15 @@ inline double dot_prod(const CLin_Vector &A, const CLin_Vector &B)
     CLin_subscript N = A.dim();
     CLin_assert(N == B.dim());
 
-    CLin_subscript i;
-    double sum = 0;
-
-    for (i=0; i<N; i++)
-		sum += A[i] * B[i];
-
-    return sum;
+    double result = cblas_ddot(
+        N,        // The number of elements in the vectors
+        A.array(), // Vector X
+        1,        // Stride within X. For example, if incX is 7, every 7th element is used
+        B.array(), // Vector Y
+        1         // Stride within Y. For example, if incY is 7, every 7th element is used
+    );
+    
+    return result;
 }
 
 inline double mod(const CLin_Vector &A)
