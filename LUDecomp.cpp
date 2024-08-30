@@ -27,7 +27,7 @@
 // matrix LU decomposition class
 //
 
-#include "stdafx.h"
+#include "STDAFX.H"
 
 #include <cmath>
 

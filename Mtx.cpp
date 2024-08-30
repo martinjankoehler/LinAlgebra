@@ -27,7 +27,7 @@
 // basic numerical matrix class
 //
 
-#include "stdafx.h"
+#include "STDAFX.H"
 
 #include "Mtx.h"
 
