@@ -76,6 +76,11 @@ inline void CLin_assert(bool a) { _ASSERT(a); }
 inline void CLin_assert(bool ) { }
 #endif
 
+#if defined(LINALG_USE_ACCELERATE)
+#   include <Accelerate/Accelerate.h>
+#else
+#   include <cblas.h>
+#endif
 
 #endif // LINALG_H
 
