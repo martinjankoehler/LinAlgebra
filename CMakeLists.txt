@@ -30,10 +30,6 @@ find_package(BLAS REQUIRED)
 include_directories(${BLAS_INCLUDE_DIRS})
 set(LinAlgebra_Required_Libs ${LinAlgebra_Required_Libs} ${BLAS_LIBRARIES})
 
-find_package(LAPACK REQUIRED)
-include_directories(${LAPACK_INCLUDE_DIRS})
-set(LinAlgebra_Required_Libs ${LinAlgebra_Required_Libs} ${LAPACK_LIBRARIES})
-
 add_library(LinAlgebra ${LinAlgebra_Sources})
 
 # libraries that needs to be linked to the present library
