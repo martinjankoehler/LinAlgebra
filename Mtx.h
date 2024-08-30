@@ -88,6 +88,9 @@ public:
 
 	inline CLin_subscript size() const { return m_iMN; }
 
+    inline double *array() { return m_pV; }
+
+    inline const double *array() const { return m_pV; }
 	// returns # of rows or cols according to parameter d (1=rows, 2=cols, other=0)
 	inline CLin_subscript dim(CLin_subscript d)
 	{
