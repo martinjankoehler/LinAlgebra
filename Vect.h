@@ -313,7 +313,10 @@ protected:
 	// copy from an array into the vector
 	inline void copy(const double* v)
 	{
-        cblas_dcopy(m_iN, v, 1, m_dV, 1);
+		CLin_subscript i;
+
+		for (i=0; i<m_iN; i++)
+			m_dV[i] = v[i];
 	}
 
     double* m_dV;
